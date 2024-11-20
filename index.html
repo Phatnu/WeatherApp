@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script src="https://kit.fontawesome.com/19d03be400.js" crossorigin="anonymous"></script>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <title>Weather Application</title>
+   <link rel="stylesheet" href="style.css">
+</head>
+<body>
+ 
+    <div class="container" data-aos="fade-up" data-aos-easing="linear" data-aos-duration="1500">
+      <div style="display: flex;justify-content: space-between;">
+         <div style="display: flex;gap: 7px;font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;font-size: 15px;">
+         <i style="font-size: 1.5rem;" class="fa-regular fa-calendar"></i>
+         <h2 ID="day"></h2>
+         </div>
+         <div style="display: flex;gap: 7px;font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;font-size: 15px;">
+            <i class="fa-regular fa-clock"></i>
+            <p class="time"></p>
+         </div>
+      </div>
+        <div class="search">
+            <input type="text" placeholder="Enter location">
+            <button><i class="fa-solid fa-magnifying-glass"></i></button>
+        </div>
+        <div class="error">
+            <p>Invalid location</p>
+        </div>
+        <div class="weather">
+         <p id="date" style="margin-top: 1rem;"></p>
+         
+            <img  src="images/2275.png" class="icon"/>
+            <h1 class="celcius" data-aos="fade-up">45°c</h1>
+            <h2 class="city">Calumpit</h2>
+            <div class="details">
+                <div class="col">
+                        <img src="images/humidity.png"/>
+                        <div class="humidity">
+                            <p class="humidityP">68%</p>
+                            <p>Humidity</p>
+                        </div>
+                </div>
+                <div class="col">
+                    <img src="images/wind.png"/>
+                        <div class="wind">
+                            <p class="windS">2km/h</p>
+                            <p>Wind</p>
+                        </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- JS FOR THE WEATHER AND API START -->
+   <!-- <script>
+   const searchInput = document.querySelector('.search input');
+   const searchBtn = document.querySelector('.search button');
+   const image = document.querySelector('.icon');
+
+   async function getWeather(city) {
+   var res = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=ceb7d0bd405fd7c248019eb0cc4dd819&units=metric`);
+
+   if(res.status == 404){
+      document.querySelector('.error').style.display = "block";
+   }
+   else
+   {
+      document.querySelector('.error').style.display = "none";
+   }
+   var data = await res.json();
+   console.log(data);
+   document.querySelector('.celcius').innerHTML = Math.round(data.main.temp) + "°c";
+   document.querySelector('.city').innerHTML = data.name;
+   document.querySelector('.humidityP').innerHTML = Math.round(data.main.humidity) + "%";
+   document.querySelector('.windS').innerHTML = Math.round(data.wind.speed) + "km/h";
+
+
+   if(data.weather[0].main == "Clouds"){
+      image.src = "images/cloudy.png"
+   }
+   else if(data.weather[0].main == "Clear"){
+      image.src = "images/SUN.png"
+   }
+   else if(data.weather[0].main == "Rain"){
+      image.src = "images/2275.png"
+   }
+   else if(data.weather[0].main == "Drizzle"){
+      image.src = "images/2275.png"
+   }
+   else if(data.weather[0].main == "Mist"){
+      image.src = "images/drizzle.png"
+   }
+
+   } 
+      searchBtn.addEventListener('click', () => {
+         getWeather(searchInput.value);
+
+      })
+
+    </script> -->
+   <!-- JS FOR THE WEATHER AND API END -->
+
+
+   <script>
+      const searchInput = document.querySelector('.search input');
+      const searchBtn = document.querySelector('.search button');
+      const image = document.querySelector('.icon');
+   
+      async function getWeather(city) {
+
+         if (city.toLowerCase() === "malolos") {
+            document.querySelector('.celcius').innerHTML = "Ako parin ba?";
+            document.querySelector('.city').innerHTML = "Malolos";
+            document.querySelector('.humidityP').innerHTML = "--"; 
+            document.querySelector('.windS').innerHTML = "--";
+            image.src = "images/2275.png"; 
+            return;
+         }
+   
+         try {
+            const res = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=ceb7d0bd405fd7c248019eb0cc4dd819&units=metric`);
+            
+            if (res.status === 404) {
+               document.querySelector('.error').style.display = "block";
+            } else {
+               document.querySelector('.error').style.display = "none";
+               const data = await res.json();
+               console.log(data);
+               document.querySelector('.celcius').innerHTML = Math.round(data.main.temp) + "°c";
+               document.querySelector('.city').innerHTML = data.name;
+               document.querySelector('.humidityP').innerHTML = Math.round(data.main.humidity) + "%";
+               document.querySelector('.windS').innerHTML = Math.round(data.wind.speed) + "km/h";
+   
+               if (data.weather[0].main === "Clouds") {
+                  image.src = "images/cloudy.png";
+               } else if (data.weather[0].main === "Clear") {
+                  image.src = "images/SUN.png";
+               } else if (data.weather[0].main === "Rain") {
+                  image.src = "images/2275.png";
+               } else if (data.weather[0].main === "Drizzle") {
+                  image.src = "images/2275.png";
+               } else if (data.weather[0].main === "Mist") {
+                  image.src = "images/drizzle.png";
+               }
+            }
+         } catch (error) {
+            console.error("Error fetching weather data:", error);
+         }
+      }
+   
+      searchBtn.addEventListener('click', () => {
+         getWeather(searchInput.value);
+      });
+   </script>
+   
+
+
+<!-- 
+JS FOR DISPLAY THE DAY start -->
+<script>
+   function displayDay() {
+     const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+     const today = new Date();
+     const dayName = days[today.getDay()];
+     
+     document.getElementById("day").innerText = dayName;
+   }
+   displayDay();
+ </script>
+<!-- 
+JS FOR DISPLAY THE DAY END -->
+
+
+<!-- JS FOR THE DISPLAYING TIME start -->
+<script>
+   function displayTime() {
+     const timeElement = document.querySelector(".time");
+     const now = new Date();
+     
+     // Format the time as HH:MM:SS
+     const hours = String(now.getHours()).padStart(2, '0');
+     const minutes = String(now.getMinutes()).padStart(2, '0');
+     const seconds = String(now.getSeconds()).padStart(2, '0');
+     const currentTime = `${hours}:${minutes}:${seconds}`;
+     
+     // Display the time in the <p> element
+     timeElement.innerText = currentTime;
+   }
+ 
+   // Call displayTime every second to update the time
+   setInterval(displayTime, 1000);
+   
+   // Initial call to display time immediately
+   displayTime();
+ </script>
+<!-- JS FOR THE DISPLAYING TIME start -->
+
+<script>
+   function displayDate() {
+     const dateElement = document.getElementById("date");
+     const now = new Date();
+
+     // Format the date as Day, Month Date, Year (e.g., "Monday, November 8, 2024")
+     const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+     const currentDate = now.toLocaleDateString(undefined, options);
+
+     // Display the date in the <p id="date"> element
+     dateElement.innerText = currentDate;
+   }
+
+   // Call displayDate once to show the date immediately
+   displayDate();
+ </script>
+
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script>
+   AOS.init();
+ </script>
+
+</body>
+</html>
